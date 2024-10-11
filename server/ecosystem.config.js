@@ -1,7 +1,7 @@
 module.export = {
     apps: [
         {
-            name: "WFMV2",
+            name: "inventory-management",
             script: "npm",
             args: "run dev",
             env:{
