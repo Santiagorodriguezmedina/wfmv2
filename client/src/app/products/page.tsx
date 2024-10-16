@@ -27,17 +27,13 @@ const Products = () => {
   } = useGetProductsQuery(searchTerm);
 
   const [createProduct] = useCreateProductMutation();
-  
-  
   const handleCreateProduct = async (productData: ProductFormData) => {
     await createProduct(productData);
   };
 
   const [deleteProduct] = useDeleteProductMutation(); 
-  const handleDeleteProduct = async (productId: string) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      await deleteProduct(productId);
-    }
+  const handleDeleteProduct = async (productData: string) => {
+    await deleteProduct(productData);
   };
   
 

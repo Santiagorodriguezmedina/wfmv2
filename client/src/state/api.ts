@@ -71,7 +71,7 @@ export const api = createApi({
 
     deleteProduct: build.mutation<void, string>({
       query: (productId) => ({
-        url: `/products/${productId}`,
+        url: ` http://13.59.6.107/products/${productId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Products"], // Invalidate the product list to trigger a refresh after deletion
