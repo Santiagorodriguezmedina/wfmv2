@@ -6,6 +6,7 @@ export interface Product {
   price: number;
   rating?: number;
   stockQuantity: number;
+  dateid: string;
 }
 
 export interface NewProduct {
@@ -13,58 +14,43 @@ export interface NewProduct {
   price: number;
   rating?: number;
   stockQuantity: number;
+  dateid: string;
 }
 
-export interface SalesSummary {
-  salesSummaryId: string;
-  totalValue: number;
-  changePercentage?: number;
-  date: string;
-}
-
-export interface PurchaseSummary {
-  purchaseSummaryId: string;
-  totalPurchased: number;
-  changePercentage?: number;
-  date: string;
-}
-
-export interface ExpenseSummary {
-  expenseSummarId: string;
-  totalExpenses: number;
-  date: string;
-}
-
-export interface ExpenseByCategorySummary {
-  expenseByCategorySummaryId: string;
-  category: string;
-  amount: string;
-  date: string;
+export interface Calendar {
+  dateid: string;
+  date: string; // Keep this as a string if you're sending date strings from the server
+  month: string; // Note: change String to string for consistency
+  products: Product[]; // Add products property to represent the products associated with the date
 }
 
 export interface DashboardMetrics {
   popularProducts: Product[];
-  salesSummary: SalesSummary[];
-  purchaseSummary: PurchaseSummary[];
-  expenseSummary: ExpenseSummary[];
-  expenseByCategorySummary: ExpenseByCategorySummary[];
+  calendar: Calendar[]; // Add calendar to represent the daily stock data
 }
 
-export interface User {
-  userId: string;
-  name: string;
-  email: string;
+export interface Sales {
+  salesId: string;
+  userid: string;
+  timestamp: string;
+  quantity: number;
+  unitPrice: number;
+  totalAmount: number;
 }
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
-  tagTypes: ["DashboardMetrics", "Products", "Users", "Expenses"],
+  tagTypes: ["DashboardMetrics", "Products"],
   endpoints: (build) => ({
+
+
     getDashboardMetrics: build.query<DashboardMetrics, void>({
       query: () => "/dashboard",
       providesTags: ["DashboardMetrics"],
     }),
+
+
     getProducts: build.query<Product[], string | void>({
       query: (search) => ({
         url: "/products",
@@ -72,6 +58,8 @@ export const api = createApi({
       }),
       providesTags: ["Products"],
     }),
+
+
     createProduct: build.mutation<Product, NewProduct>({
       query: (newProduct) => ({
         url: "/products",
@@ -80,14 +68,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
-    getUsers: build.query<User[], void>({
-      query: () => "/users",
-      providesTags: ["Users"],
+
+    deleteProduct: build.mutation<void, string>({
+      query: (productId) => ({
+        url: `/products/${productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Products"], // Invalidate the product list to trigger a refresh after deletion
     }),
-    getExpensesByCategory: build.query<ExpenseByCategorySummary[], void>({
-      query: () => "/expenses",
-      providesTags: ["Expenses"],
-    }),
+
   }),
 });
 
@@ -95,6 +84,5 @@ export const {
   useGetDashboardMetricsQuery,
   useGetProductsQuery,
   useCreateProductMutation,
-  useGetUsersQuery,
-  useGetExpensesByCategoryQuery,
+  useDeleteProductMutation,
 } = api;
