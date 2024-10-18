@@ -6,12 +6,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoute";
 import productRoutes from "./routes/productRoute"
-
+import inventoryRoutes from "./routes/inventoryRoute"
 
 
 // ROUTE IMPORTS
-
-
 
 
 //CONFIGURATIONS
@@ -20,28 +18,19 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin"}));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
-app.use(cors({
-    origin: [
-        'http://localhost:3000',  // Allow requests from localhost
-        'http://13.59.6.107',
-        'https://main.d15l57c0clyog.amplifyapp.com/products',
-        'https://g019hmf68h.execute-api.us-east-2.amazonaws.com/prod',
-    ],
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],  // Specify allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Allow specific headers
-    credentials: true  // Allow cookies or other credentials
-}));
 
 
 
 //ROUTES  
 app.use("/dashboard", dashboardRoutes) // http://localhost:8000/dashboard
 app.use("/products", productRoutes) // http://localhost:8000/products
+app.use("/inventory", inventoryRoutes) // http://localhost:8000/inventory
 
 //SERVER
 const port = Number(process.env.PORT) || 3001;

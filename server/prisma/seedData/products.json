@@ -1,60 +1,50 @@
 [
   {
-    "productId": "d35623ee-bef6-42b2-8776-2f99f8bb4782",
+    "productId": 1,
     "name": "Pinkscale Blazing Star",
     "price": 456.04,
     "rating": 2.25,
     "stockQuantity": 124834,
-    "dateid":"20241015"
+    "description":"NA"
   },
   {
-    "productId": "8ac1ac77-7358-425e-be16-0bdde9f02e59",
+    "productId": 2,
     "name": "Gila Milkvetch",
     "price": 899.05,
     "rating": 3.56,
-    "stockQuantity": 799402
-    ,"dateid":"20241016"
+    "stockQuantity": 799402,
+    "description":"NA"
   },
   {
-    "productId": "1afc136b-4d9f-4e8e-aace-8e1df908a404",
+    "productId": 3,
     "name": "Rocky Mountain Zinnia",
     "price": 264.37,
     "rating": 3.23,
-    "stockQuantity": 842192
-    ,"dateid":"20241017"
+    "stockQuantity": 842192,
+    "description":"NA"
   },
   {
-    "productId": "af84cc12-4fea-4f58-aece-f2ce92ca9580",
+    "productId": 4,
     "name": "Guadalupe Suncup",
     "price": 555.93,
     "rating": 4.09,
-    "stockQuantity": 236333
-    ,"dateid":"20241018"
+    "stockQuantity": 236333,
+    "description":"NA"
   },
   {
-    "productId": "86e3bb1c-2f5d-4774-98f3-4df7cddd0a0f",
-    "name": "Saline Phlox",
+    "productId": 5,
+    "name": "drill",
     "price": 82.62,
     "rating": 4.8,
-    "stockQuantity": 601208
-    ,"dateid":"20241019"
-  }
-  ,
+    "stockQuantity": 601208,
+    "description":"NA"
+  },
   {
-    "productId": "86e3bb1c-2f5d-4774-98f3-4df7cddd0a0fb",
-    "name": "Saline Phlox",
+    "productId": 6,
+    "name": "drill2",
     "price": 82.62,
     "rating": 4.8,
-    "stockQuantity": 601208
-    ,"dateid":"20241019"
-  }
-  ,
-  {
-    "productId": "86e3bb1c-2f5d-4774-98f3-4df7cddd0a0fa",
-    "name": "Saline Phlox",
-    "price": 82.62,
-    "rating": 4.8,
-    "stockQuantity": 601208
-    ,"dateid":"20241019"
+    "stockQuantity": 601208,
+    "description":"NA"
   }
 ]

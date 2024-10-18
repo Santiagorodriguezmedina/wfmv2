@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 const columns: GridColDef[] = [
   { field: "productId", headerName: "ID", width: 90 },
   { field: "name", headerName: "Product Name", width: 200 },
-  { field: "dateid", headerName: "Date", width: 110},
+  { field: "description", headerName: "Description", width: 110},
   {
     field: "price",
     headerName: "Price",

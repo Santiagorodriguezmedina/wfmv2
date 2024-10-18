@@ -1,32 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface Product {
-  productId: string;
+  productId: number;
   name: string;
   price: number;
   rating?: number;
   stockQuantity: number;
-  dateid: string;
+  description: string;
 }
-
 export interface NewProduct {
   name: string;
   price: number;
   rating?: number;
   stockQuantity: number;
-  dateid: string;
-}
-
-export interface Calendar {
-  dateid: string;
-  date: string; // Keep this as a string if you're sending date strings from the server
-  month: string; // Note: change String to string for consistency
-  products: Product[]; // Add products property to represent the products associated with the date
+  description: string;
 }
 
 export interface DashboardMetrics {
   popularProducts: Product[];
-  calendar: Calendar[]; // Add calendar to represent the daily stock data
 }
 
 export interface Sales {
@@ -44,12 +35,10 @@ export const api = createApi({
   tagTypes: ["DashboardMetrics", "Products"],
   endpoints: (build) => ({
 
-
     getDashboardMetrics: build.query<DashboardMetrics, void>({
       query: () => "/dashboard",
       providesTags: ["DashboardMetrics"],
     }),
-
 
     getProducts: build.query<Product[], string | void>({
       query: (search) => ({
@@ -59,7 +48,6 @@ export const api = createApi({
       providesTags: ["Products"],
     }),
 
-
     createProduct: build.mutation<Product, NewProduct>({
       query: (newProduct) => ({
         url: "/products",
@@ -68,6 +56,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
+
+    updateProduct: build.mutation<Product, { productId: number; updatedProduct: NewProduct }>({
+      query: ({ productId, updatedProduct }) => ({
+        url: `/inventory/${productId}`, // Use /products/:id as per your route
+        method: "PUT",
+        body: updatedProduct,
+      }),
+      invalidatesTags: ["Products"],
+    }),  
 
     deleteProduct: build.mutation<void, string>({
       query: (productId) => ({

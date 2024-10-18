@@ -3,10 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getProducts = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getProducts = async (req: Request,res: Response): Promise<void> => {
   try {
     const search = req.query.search?.toString();
     const products = await prisma.products.findMany({
@@ -22,12 +19,9 @@ export const getProducts = async (
   }
 };
 
-export const createProduct = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const createProduct = async (req: Request,res: Response): Promise<void> => {
   try {
-    const { productId, name, price, rating, stockQuantity ,dateid} = req.body;
+    const { productId, name, price, rating, stockQuantity ,description} = req.body;
     const product = await prisma.products.create({
       data: {
         productId,
@@ -35,7 +29,7 @@ export const createProduct = async (
         price,
         rating,
         stockQuantity,
-        dateid,
+        description,
       },
     });
     res.status(201).json(product);
@@ -45,19 +39,16 @@ export const createProduct = async (
 };
 
 
-export const deleteProduct = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const productId = req.params.id; // Get the product ID from the request parameters
+export const deleteProduct = async (req: Request,res: Response): Promise<void> => {
+  const productId = parseInt(req.params.productId, 10);
 
   try {
     await prisma.products.delete({
       where: { productId: productId }, // Use productId as the unique identifier
     });
-    res.status(204).send(); // No content on successful deletion
+
+    res.status(204).send();
   } catch (error) {
-    // Use type assertion to treat error as any or a specific type
     const prismaError = error as { code?: string }; // Assert the error type
 
     if (prismaError.code === 'P2025') { // Check for the specific error code
@@ -67,4 +58,5 @@ export const deleteProduct = async (
     }
   }
 };
+
 

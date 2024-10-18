@@ -12,31 +12,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Calendar {
-  dateid String    @id
-  date DateTime
-  month String  
-  products Products[]
-}
 
 model Products {
-  productId     String      @id
+  productId     Int      @id
   name          String
   price         Float
   rating        Float?
   stockQuantity Int
-  Sales         Sales[]
-  dateid        String
-  date          Calendar @relation(fields: [dateid], references: [dateid])
+  description   String
+
 }
 
 model Sales {
   saleId      String   @id
-  productId   String
+  productId   Int
   timestamp   DateTime
   quantity    Int
   unitPrice   Float
   totalAmount Float
   userid      String   
-  product     Products @relation(fields: [productId], references: [productId]) 
 }

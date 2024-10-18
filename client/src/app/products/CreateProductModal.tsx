@@ -7,7 +7,7 @@ type ProductFormData = {
   price: number;
   stockQuantity: number;
   rating: number;
-  dateid: string;
+  description: string;
 };
 
 type CreateProductModalProps = {
@@ -27,7 +27,7 @@ const CreateProductModal = ({
     price: 0,
     stockQuantity: 0,
     rating: 0,
-    dateid:"",
+    description:"",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -114,15 +114,15 @@ const CreateProductModal = ({
             required
           />
           {/* DATE */}
-          <label htmlFor="date" className={labelCssStyles}>
-            date
+          <label htmlFor="Description" className={labelCssStyles}>
+          Description
           </label>
           <input
             type="text"
-            name="dateid"
-            placeholder="Date"
+            name="description"
+            placeholder="Description"
             onChange={handleChange}
-            value={formData.dateid}
+            value={formData.description}
             className={inputCssStyles}
             required
           />

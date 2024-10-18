@@ -27,6 +27,9 @@ const Dashboard = () => {
               {/* Product stock quantity */}
               <span>Stock: {product.stockQuantity}</span>
 
+              {/* Product stock quantity */}
+              <span>Stock: {product.description}</span>
+
             </div>
           </li>
         ))}
