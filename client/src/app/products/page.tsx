@@ -1,7 +1,7 @@
 "use client";
 
-import { useCreateProductMutation, useGetProductsQuery, useDeleteProductMutation } from "@/state/api";
-import { PlusCircleIcon, SearchIcon, Trash2Icon } from "lucide-react";
+import { useCreateProductMutation, useGetProductsQuery } from "@/state/api";
+import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
 import Rating from "@/app/(components)/Rating";
@@ -30,12 +30,6 @@ const Products = () => {
   const handleCreateProduct = async (productData: ProductFormData) => {
     await createProduct(productData);
   };
-
-  const [deleteProduct] = useDeleteProductMutation(); 
-  const handleDeleteProduct = async (productId: string) => {
-    await deleteProduct(productId);
-  };
-  
 
   if (isLoading) {
     return <div className="py-4">Loading...</div>;
@@ -108,12 +102,6 @@ const Products = () => {
                     <Rating rating={product.rating} />
                   </div>
                 )}
-                <button
-                className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => handleDeleteProduct(product.productId)}
-                >
-                  <Trash2Icon className="w-5 h-5 mr-1 inline" /> Delete
-                </button>
               </div>
             </div>
           ))

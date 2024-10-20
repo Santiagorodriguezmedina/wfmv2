@@ -57,6 +57,7 @@ export const api = createApi({
       invalidatesTags: ["Products"],
     }),
 
+
     updateProduct: build.mutation<Product, { productId: number; updatedProduct: NewProduct }>({
       query: ({ productId, updatedProduct }) => ({
         url: `/inventory/${productId}`, // Use /products/:id as per your route
@@ -66,13 +67,6 @@ export const api = createApi({
       invalidatesTags: ["Products"],
     }),  
 
-    deleteProduct: build.mutation<void, string>({
-      query: (productId) => ({
-        url: `/products/${productId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Products"], // Invalidate the product list to trigger a refresh after deletion
-    }),
 
   }),
 });
@@ -81,5 +75,5 @@ export const {
   useGetDashboardMetricsQuery,
   useGetProductsQuery,
   useCreateProductMutation,
-  useDeleteProductMutation,
+  useUpdateProductMutation,
 } = api;

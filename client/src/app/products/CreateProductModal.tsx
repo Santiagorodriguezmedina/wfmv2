@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import Header from "@/app/(components)/Header";
 
 type ProductFormData = {
+  productId: number; // Add productId to the type
   name: string;
   price: number;
   stockQuantity: number;
@@ -14,20 +15,24 @@ type CreateProductModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onCreate: (formData: ProductFormData) => void;
+  fetchProducts: () => Promise<ProductFormData[]>; // Function to fetch products
 };
+
+const randomProductId = Math.floor(Math.random() * 1000000) + 1; // Generates a random number between 1 and 1,000,000
 
 const CreateProductModal = ({
   isOpen,
   onClose,
   onCreate,
+  fetchProducts, // Accept fetchProducts prop
 }: CreateProductModalProps) => {
-  const [formData, setFormData] = useState({
-    productId: v4(),
+  const [formData, setFormData] = useState<ProductFormData>({
+    productId: randomProductId, 
     name: "",
     price: 0,
     stockQuantity: 0,
     rating: 0,
-    description:"",
+    description: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,8 +118,9 @@ const CreateProductModal = ({
             className={inputCssStyles}
             required
           />
-          {/* DATE */}
-          <label htmlFor="Description" className={labelCssStyles}>
+
+          {/* Description */}
+          <label htmlFor="description" className={labelCssStyles}>
           Description
           </label>
           <input

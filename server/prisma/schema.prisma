@@ -20,8 +20,8 @@ model Products {
   rating        Float?
   stockQuantity Int
   description   String
-
 }
+
 
 model Sales {
   saleId      String   @id
