@@ -11,12 +11,12 @@ const Inventory = () => {
   const [updateProduct] = useUpdateProductMutation();
   const [editRows, setEditRows] = useState<Product[]>([]); // Store edited rows
 
-  const processRowUpdate = async (newRow: any, oldRow: any) => {
+  const processRowUpdate = async (newRow: Product, oldRow: Product) => {
     try {
       const updatedProduct = { ...newRow };
-      await updateProduct({ productId: updatedProduct.productId, updatedProduct });
+      await updateProduct({ productId: updatedProduct.productId, updatedProduct }).unwrap(); // Unwrap to handle errors
       console.log("Product updated successfully");
-      return updatedProduct;
+      return updatedProduct; // Return updated row
     } catch (error) {
       console.error("Failed to update product", error);
       return oldRow; // Revert changes on error
@@ -95,10 +95,7 @@ const Inventory = () => {
     <div className="flex flex-col">
       <Header name="Inventory" />
       <DataGrid
-        rows={products.map((product) => ({
-          ...product,
-          isEditing: editRows.some((edited) => edited.productId === product.productId),
-        }))}
+        rows={products}
         columns={columns}
         getRowId={(row) => row.productId}
         checkboxSelection

@@ -19,6 +19,26 @@ export const getProducts = async (req: Request,res: Response): Promise<void> => 
   }
 };
 
+export const getProductById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params; // Get the productId from the URL params
+    const product = await prisma.products.findUnique({
+      where: {
+        productId: id, // Use the productId to filter
+      },
+    });
+
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+      return;
+    }
+
+    res.json(product); // Return the specific product
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving product" });
+  }
+};
+
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { productId, name, price, rating, stockQuantity, description } = req.body;
@@ -43,32 +63,25 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
 
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const productId = parseInt(req.params.id, 10); // Parse productId as an integer
+    const { id } = req.params; // Get the productId from the URL params
+    const updatedData = req.body; // Get the updated product data from the request body
 
-    const { name, price, rating, stockQuantity, description } = req.body;
-
-    const product = await prisma.products.update({
-      where: { productId }, // Match the 'productId' field in your Prisma model
-      data: {
-        productId,
-        name,
-        price,
-        rating,
-        stockQuantity,
-        description,
+    const updatedProduct = await prisma.products.update({
+      where: {
+        productId: id, 
       },
+      data: updatedData, // Update with new data
     });
 
-    res.status(200).json(product);
+    res.json(updatedProduct); // Return the updated product
   } catch (error) {
-    console.error('Error updating product:', error);  // Log the error for debugging
-    res.status(500).json({ message: 'Error updating product' });
+    res.status(500).json({ message: "Error updating product" });
   }
 };
 
 export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const productId = parseInt(req.params.id, 10); // Parse productId as an integer
+    const productId = req.params.id; 
 
     // Delete the product using Prisma
     await prisma.products.delete({

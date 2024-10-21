@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface Product {
-  productId: number;
+  productId: string;
   name: string;
   price: number;
   rating?: number;
@@ -56,7 +56,14 @@ export const api = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
-    updateProduct: build.mutation<Product, { productId: number; updatedProduct: NewProduct }>({
+
+    // Add the new query to get product by ID
+    getProductsById: build.query<Product, string>({
+      query: (id) => `/products/${id}`, // Adjust based on your route
+      providesTags: ["Products"],
+    }),
+
+    updateProduct: build.mutation<Product, { productId: string; updatedProduct: NewProduct }>({
       query: ({ productId, updatedProduct }) => ({
         url: `/products/${productId}`, // Use /products/:id as per your route
         method: "PUT",
@@ -64,7 +71,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
-    deleteProduct: build.mutation<void, number>({
+    deleteProduct: build.mutation<void, string>({
       query: (productId) => ({
         url: `/products/${productId}`, // Use /products/:id as per your route
         method: "DELETE",
@@ -79,5 +86,6 @@ export const {
   useGetProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
-  useDeleteProductMutation, // Export the new delete mutation
+  useDeleteProductMutation,
+  useGetProductsByIdQuery // Export the new delete mutation
 } = api;

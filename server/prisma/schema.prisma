@@ -14,7 +14,7 @@ datasource db {
 
 
 model Products {
-  productId     Int      @id
+  productId     String      @id
   name          String
   price         Float
   rating        Float?

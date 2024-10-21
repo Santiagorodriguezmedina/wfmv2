@@ -1,6 +1,11 @@
 "use client";
 
-import { useCreateProductMutation, useGetProductsQuery, useDeleteProductMutation } from "@/state/api";
+import { 
+  useCreateProductMutation, 
+  useGetProductsQuery, 
+  useDeleteProductMutation,
+  useGetProductsByIdQuery // Import the new query
+} from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
@@ -9,7 +14,7 @@ import CreateProductModal from "./CreateProductModal";
 import Image from "next/image";
 
 type ProductFormData = {
-  productId: number;
+  productId: string;
   name: string;
   price: number;
   stockQuantity: number;
@@ -20,6 +25,7 @@ type ProductFormData = {
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null); // To store the selected product ID
 
   const {
     data: products,
@@ -40,7 +46,7 @@ const Products = () => {
     await refetchProducts(); // Ensure it returns a Promise
   };
 
-  const handleDeleteProduct = async (productId: number) => {
+  const handleDeleteProduct = async (productId: string) => { // Change productId type to string
     try {
       await deleteProduct(productId).unwrap(); // Unwrap to handle errors better
       handleFetchProducts(); // Refetch products after deletion
@@ -50,7 +56,18 @@ const Products = () => {
     }
   };
 
-  if (isLoading) {
+  const handleProductClick = (productId: string) => {
+    setSelectedProductId(productId); // Set the selected product ID
+  };
+
+  const { data: selectedProduct, isLoading: isLoadingProduct } = useGetProductsByIdQuery(
+    selectedProductId as string, // Cast to string when not null
+    {
+      skip: !selectedProductId, // Skip if selectedProductId is null
+    }
+  );
+
+  if (isLoading || isLoadingProduct) {
     return <div className="py-4">Loading...</div>;
   }
 
@@ -95,6 +112,7 @@ const Products = () => {
           <div
             key={product.productId}
             className="border shadow rounded-md p-4 max-w-full w-full mx-auto"
+            onClick={() => handleProductClick(product.productId)} // Handle product click
           >
             <div className="flex flex-col items-center">
               <Image
@@ -120,7 +138,10 @@ const Products = () => {
               )}
               <button
                 className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                onClick={() => handleDeleteProduct(product.productId)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent click from triggering product selection
+                  handleDeleteProduct(product.productId);
+                }}
               >
                 Delete
               </button>

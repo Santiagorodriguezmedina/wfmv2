@@ -1,6 +1,6 @@
 [
   {
-    "productId": 1,
+    "productId": "1",
     "name": "Pinkscale Blazing Star",
     "price": 456.04,
     "rating": 2.25,
@@ -8,7 +8,7 @@
     "description":"NA"
   },
   {
-    "productId": 2,
+    "productId": "2",
     "name": "Gila Milkvetch",
     "price": 899.05,
     "rating": 3.56,
@@ -16,7 +16,7 @@
     "description":"NA"
   },
   {
-    "productId": 3,
+    "productId": "3",
     "name": "Rocky Mountain Zinnia",
     "price": 264.37,
     "rating": 3.23,
@@ -24,7 +24,7 @@
     "description":"NA"
   },
   {
-    "productId": 4,
+    "productId": "4",
     "name": "Guadalupe Suncup",
     "price": 555.93,
     "rating": 4.09,
@@ -32,7 +32,7 @@
     "description":"NA"
   },
   {
-    "productId": 5,
+    "productId": "5",
     "name": "drill",
     "price": 82.62,
     "rating": 4.8,
@@ -40,7 +40,7 @@
     "description":"NA"
   },
   {
-    "productId": 6,
+    "productId": "6",
     "name": "drill2",
     "price": 82.62,
     "rating": 4.8,

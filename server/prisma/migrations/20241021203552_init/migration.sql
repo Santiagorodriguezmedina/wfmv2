@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Products" (
-    "productId" INTEGER NOT NULL,
+    "productId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "rating" DOUBLE PRECISION,

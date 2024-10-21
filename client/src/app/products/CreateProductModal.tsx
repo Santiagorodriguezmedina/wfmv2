@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Header from "@/app/(components)/Header";
+import { v4 } from "uuid";
 
 type ProductFormData = {
-  productId: number;
+  productId: string;
   name: string;
   price: number;
   stockQuantity: number;
@@ -17,8 +18,6 @@ type CreateProductModalProps = {
   fetchProducts: () => Promise<void>;  // Updated to include refetch function
 };
 
-const randomProductId = Math.floor(Math.random() * 1000000) + 1;
-
 const CreateProductModal = ({
   isOpen,
   onClose,
@@ -26,7 +25,7 @@ const CreateProductModal = ({
   fetchProducts,  // Refetch function passed in
 }: CreateProductModalProps) => {
   const [formData, setFormData] = useState<ProductFormData>({
-    productId: randomProductId,
+    productId: v4(),
     name: "",
     price: 0,
     stockQuantity: 0,
