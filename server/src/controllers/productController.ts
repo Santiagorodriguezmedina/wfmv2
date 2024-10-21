@@ -65,3 +65,19 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ message: 'Error updating product' });
   }
 };
+
+export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const productId = parseInt(req.params.id, 10); // Parse productId as an integer
+
+    // Delete the product using Prisma
+    await prisma.products.delete({
+      where: { productId }, // Match the 'productId' field in your Prisma model
+    });
+
+    res.status(204).send(); // No content response for successful deletion
+  } catch (error) {
+    console.error('Error deleting product:', error); // Log the error for debugging
+    res.status(500).json({ message: 'Error deleting product' });
+  }
+};

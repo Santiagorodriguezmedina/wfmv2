@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProduct, getProducts, updateProduct } from "../controllers/productController";
+import { createProduct, getProducts, updateProduct, deleteProduct } from "../controllers/productController";
 
 const router = Router();
 
@@ -11,5 +11,8 @@ router.post("/", createProduct);
 
 // PUT route to fetch products
 router.put("/:id", updateProduct);
+
+// DELETE route to delete a product
+router.delete("/:id", deleteProduct);
 
 export default router;

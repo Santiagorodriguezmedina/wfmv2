@@ -1,6 +1,6 @@
 "use client";
 
-import { useCreateProductMutation, useGetProductsQuery } from "@/state/api";
+import { useCreateProductMutation, useGetProductsQuery, useDeleteProductMutation } from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
@@ -25,10 +25,11 @@ const Products = () => {
     data: products,
     isLoading,
     isError,
-    refetch: refetchProducts, // Destructure the refetch function
+    refetch: refetchProducts,
   } = useGetProductsQuery(searchTerm);
 
   const [createProduct] = useCreateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation(); // Hook for delete mutation
 
   const handleCreateProduct = async (productData: ProductFormData) => {
     await createProduct(productData);
@@ -37,6 +38,16 @@ const Products = () => {
 
   const handleFetchProducts = async () => {
     await refetchProducts(); // Ensure it returns a Promise
+  };
+
+  const handleDeleteProduct = async (productId: number) => {
+    try {
+      await deleteProduct(productId).unwrap(); // Unwrap to handle errors better
+      handleFetchProducts(); // Refetch products after deletion
+    } catch (error) {
+      console.error("Failed to delete the product: ", error);
+      // Optionally, you can show an error message to the user
+    }
   };
 
   if (isLoading) {
@@ -79,7 +90,7 @@ const Products = () => {
       </div>
 
       {/* BODY PRODUCTS LIST */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg-grid-cols-3 gap-10 justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-between">
         {products?.map((product) => (
           <div
             key={product.productId}
@@ -107,6 +118,12 @@ const Products = () => {
                   <Rating rating={product.rating} />
                 </div>
               )}
+              <button
+                className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                onClick={() => handleDeleteProduct(product.productId)}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
