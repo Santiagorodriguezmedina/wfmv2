@@ -1,9 +1,8 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { v4 } from "uuid";
 import Header from "@/app/(components)/Header";
 
 type ProductFormData = {
-  productId: number; // Add productId to the type
+  productId: number;
   name: string;
   price: number;
   stockQuantity: number;
@@ -14,20 +13,20 @@ type ProductFormData = {
 type CreateProductModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (formData: ProductFormData) => void;
-  fetchProducts: () => Promise<ProductFormData[]>; // Function to fetch products
+  onCreate: (formData: ProductFormData) => Promise<void>;
+  fetchProducts: () => Promise<void>;  // Updated to include refetch function
 };
 
-const randomProductId = Math.floor(Math.random() * 1000000) + 1; // Generates a random number between 1 and 1,000,000
+const randomProductId = Math.floor(Math.random() * 1000000) + 1;
 
 const CreateProductModal = ({
   isOpen,
   onClose,
   onCreate,
-  fetchProducts, // Accept fetchProducts prop
+  fetchProducts,  // Refetch function passed in
 }: CreateProductModalProps) => {
   const [formData, setFormData] = useState<ProductFormData>({
-    productId: randomProductId, 
+    productId: randomProductId,
     name: "",
     price: 0,
     stockQuantity: 0,
@@ -46,10 +45,11 @@ const CreateProductModal = ({
     });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onCreate(formData);
-    onClose();
+    await onCreate(formData);  // Create the product
+    await fetchProducts();  // Refetch the product list
+    onClose();  // Close the modal after creation and refetch
   };
 
   if (!isOpen) return null;
@@ -63,7 +63,6 @@ const CreateProductModal = ({
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <Header name="Create New Product" />
         <form onSubmit={handleSubmit} className="mt-5">
-          {/* PRODUCT NAME */}
           <label htmlFor="productName" className={labelCssStyles}>
             Product Name
           </label>
@@ -77,7 +76,6 @@ const CreateProductModal = ({
             required
           />
 
-          {/* PRICE */}
           <label htmlFor="productPrice" className={labelCssStyles}>
             Price
           </label>
@@ -91,7 +89,6 @@ const CreateProductModal = ({
             required
           />
 
-          {/* STOCK QUANTITY */}
           <label htmlFor="stockQuantity" className={labelCssStyles}>
             Stock Quantity
           </label>
@@ -105,7 +102,6 @@ const CreateProductModal = ({
             required
           />
 
-          {/* RATING */}
           <label htmlFor="rating" className={labelCssStyles}>
             Rating
           </label>
@@ -119,9 +115,8 @@ const CreateProductModal = ({
             required
           />
 
-          {/* Description */}
           <label htmlFor="description" className={labelCssStyles}>
-          Description
+            Description
           </label>
           <input
             type="text"
@@ -133,7 +128,6 @@ const CreateProductModal = ({
             required
           />
 
-          {/* CREATE ACTIONS */}
           <button
             type="submit"
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"

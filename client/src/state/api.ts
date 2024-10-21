@@ -60,7 +60,7 @@ export const api = createApi({
 
     updateProduct: build.mutation<Product, { productId: number; updatedProduct: NewProduct }>({
       query: ({ productId, updatedProduct }) => ({
-        url: `/inventory/${productId}`, // Use /products/:id as per your route
+        url: `/products/${productId}`, // Use /products/:id as per your route
         method: "PUT",
         body: updatedProduct,
       }),

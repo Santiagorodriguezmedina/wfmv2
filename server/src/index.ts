@@ -6,7 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoute";
 import productRoutes from "./routes/productRoute"
-import inventoryRoutes from "./routes/inventoryRoute"
+
 
 
 // ROUTE IMPORTS
@@ -30,7 +30,7 @@ app.use(cors());
 //ROUTES  
 app.use("/dashboard", dashboardRoutes) // http://localhost:8000/dashboard
 app.use("/products", productRoutes) // http://localhost:8000/products
-app.use("/inventory", inventoryRoutes) // http://localhost:8000/inventory
+
 
 //SERVER
 const port = Number(process.env.PORT) || 3001;

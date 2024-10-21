@@ -11,23 +11,20 @@ const Inventory = () => {
   const [updateProduct] = useUpdateProductMutation();
   const [editRows, setEditRows] = useState<Product[]>([]); // Store edited rows
 
-  const handleEditCellChange = (params: any) => {
-    const { id, field, value } = params;
-    setEditRows((prev) =>
-      prev.map((row) =>
-        row.productId === id ? { ...row, [field]: value } : row
-      )
-    );
-  };
-
-  const handleSave = async (product: Product) => {
+  const processRowUpdate = async (newRow: any, oldRow: any) => {
     try {
-      await updateProduct({ productId: product.productId, updatedProduct: product });
+      const updatedProduct = { ...newRow };
+      await updateProduct({ productId: updatedProduct.productId, updatedProduct });
       console.log("Product updated successfully");
-      setEditRows((prev) => prev.filter((row) => row.productId !== product.productId));
+      return updatedProduct;
     } catch (error) {
       console.error("Failed to update product", error);
+      return oldRow; // Revert changes on error
     }
+  };
+
+  const handleProcessRowUpdateError = (error: any) => {
+    console.error("Error while updating row:", error);
   };
 
   const columns: GridColDef[] = [
@@ -74,7 +71,7 @@ const Inventory = () => {
           variant="contained"
           color="primary"
           size="small"
-          onClick={() => handleSave(params.row)} // Save the changes
+          onClick={() => processRowUpdate(params.row, params.row)} // Save the changes
         >
           Save
         </Button>
@@ -105,7 +102,8 @@ const Inventory = () => {
         columns={columns}
         getRowId={(row) => row.productId}
         checkboxSelection
-        onCellEditCommit={handleEditCellChange} // Handle cell edit
+        processRowUpdate={processRowUpdate} // Handle cell edit
+        onProcessRowUpdateError={handleProcessRowUpdateError} // Handle errors
         className="bg-white shadow rounded-lg border border-gray-200 mt-5 !text-gray-700"
       />
     </div>
