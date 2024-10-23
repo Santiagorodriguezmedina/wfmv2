@@ -12,23 +12,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Products {
-  productId     String      @id
+  productId     String   @id
   name          String
   price         Float
   rating        Float?
   stockQuantity Int
   description   String
+  sales         Sales[]  // Define a one-to-many relationship with Sales
 }
-
 
 model Sales {
   saleId      String   @id
-  productId   Int
+  product     Products @relation(fields: [productId], references: [productId])
+  productId   String   // Foreign key referencing productId from Products
   timestamp   DateTime
   quantity    Int
   unitPrice   Float
   totalAmount Float
-  userid      String   
+  userid      String
 }
+

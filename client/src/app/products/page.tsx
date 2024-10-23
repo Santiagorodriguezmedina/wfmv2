@@ -1,11 +1,6 @@
 "use client";
 
-import { 
-  useCreateProductMutation, 
-  useGetProductsQuery, 
-  useDeleteProductMutation,
-  useGetProductsByIdQuery // Import the new query
-} from "@/state/api";
+import { useCreateProductMutation, useGetProductsQuery, useDeleteProductMutation,} from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
@@ -60,14 +55,8 @@ const Products = () => {
     setSelectedProductId(productId); // Set the selected product ID
   };
 
-  const { data: selectedProduct, isLoading: isLoadingProduct } = useGetProductsByIdQuery(
-    selectedProductId as string, // Cast to string when not null
-    {
-      skip: !selectedProductId, // Skip if selectedProductId is null
-    }
-  );
 
-  if (isLoading || isLoadingProduct) {
+  if (isLoading) {
     return <div className="py-4">Loading...</div>;
   }
 

@@ -13,7 +13,7 @@ CREATE TABLE "Products" (
 -- CreateTable
 CREATE TABLE "Sales" (
     "saleId" TEXT NOT NULL,
-    "productId" INTEGER NOT NULL,
+    "productId" TEXT NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL,
     "quantity" INTEGER NOT NULL,
     "unitPrice" DOUBLE PRECISION NOT NULL,
@@ -22,3 +22,6 @@ CREATE TABLE "Sales" (
 
     CONSTRAINT "Sales_pkey" PRIMARY KEY ("saleId")
 );
+
+-- AddForeignKey
+ALTER TABLE "Sales" ADD CONSTRAINT "Sales_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Products"("productId") ON DELETE RESTRICT ON UPDATE CASCADE;

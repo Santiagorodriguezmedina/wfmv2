@@ -1,47 +1,11 @@
 [
   {
     "saleId": "4fca2797-3e88-40c5-88d3-fd4df8744958",
-    "productId": 1,
+    "productId": "1",
     "timestamp": "2023-11-21T15:03:18Z",
-    "quantity": 699,
+    "quantity": 700,
     "unitPrice": 550.22,
     "totalAmount": 4708.54
     ,"userid":"Romo"
-  },
-  {
-    "saleId": "ae6a3d09-fdf8-407b-9e55-07a347c87ef3",
-    "productId": 2,
-    "timestamp": "2023-05-17T20:20:03Z",
-    "quantity": 182,
-    "unitPrice": 113.69,
-    "totalAmount": 9419.4
-    ,"userid":"Nicolas"
-  },
-  {
-    "saleId": "cff83ef4-6b2c-4ad4-b550-929e0eb3fa93",
-    "productId": 3,
-    "timestamp": "2023-11-21T15:03:43Z",
-    "quantity": 219,
-    "unitPrice": 606.43,
-    "totalAmount": 8773.57
-    ,"userid":"Juan"
-  },
-  {
-    "saleId": "bc6fbde5-325d-4918-b8d9-36d8a7be769f",
-    "productId": 4,
-    "timestamp": "2024-03-01T17:35:27Z",
-    "quantity": 286,
-    "unitPrice": 246.58,
-    "totalAmount": 3328.18
-    ,"userid":"Juan"
-  },
-  {
-    "saleId": "022fe7a7-3938-4f41-9f56-f9e0a797f00f",
-    "productId": 5,
-    "timestamp": "2023-06-27T12:09:45Z",
-    "quantity": 107,
-    "unitPrice": 891.26,
-    "totalAmount": 3915.37
-    ,"userid":"James"
   }
 ]
