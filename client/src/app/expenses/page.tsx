@@ -1,64 +1,65 @@
 "use client";
 
-import { useCreateSalesMutation, useGetSalesQuery } from "@/state/api";
+import { useCreateExpensesMutation, useGetExpensesQuery } from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
-import CreateSalesModal from "./CreateSalesModal";
+import CreateExpensesModal from "./CreateExpensesModal";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { format } from 'date-fns'; // To format dates
 
-type SalesFormData = {
-  saleId: string;
-  productId: string; 
+type ExpensesFormData = {
+  expenseId: string;
+  productId: string;
   productName: string;
   quantity: number;
   unitPrice: number;
   totalAmount: number;
   description: string;
-  userid: string;
-  createdAt: string;
+  userid: string; 
+  createdAt: string; 
 };
 
-const Sales = () => {
+
+const Expenses = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSalesId, setSelectedSalesId] = useState<string | null>(null); // To store the selected product ID
+  const [selectedExpensesId, setSelectedExpensesId] = useState<string | null>(null); // To store the selected product ID
   const [filterDate, setFilterDate] = useState(""); // Filter by date
 
   const {
-    data: sales,
+    data: expenses,
     isLoading,
     isError,
-    refetch: refetchSales,
-  } = useGetSalesQuery(searchTerm);
+    refetch: refetchExpenses,
+  } = useGetExpensesQuery(searchTerm);
 
-  const [createSales] = useCreateSalesMutation();
+  const [createExpenses] = useCreateExpensesMutation();
 
-  const handleCreateSales = async (salesData: SalesFormData) => {
+  const handleCreateExpenses = async (expensesData: ExpensesFormData) => {
     try {
-      // Create the sale
-      const response = await createSales(salesData).unwrap();
+      // Create the expemse
+      const response = await createExpenses(expensesData).unwrap();
       
-      console.log("Sale created successfully", response);
+      console.log("Expense created successfully", response);
       
-      // Refetch sales after creation to get the latest data
-      await refetchSales(); 
+      // Refetch expenses after creation to get the latest data
+      await refetchExpenses(); 
     } catch (error) {
-      console.error("Error creating sale:", error);
+      console.error("Error creating expense:", error);
     }
   };
 
-  const handleFetchSales = async () => {
-    await refetchSales(); // Ensure it returns a Promise
+  const handleFetchExpenses = async () => {
+    await refetchExpenses(); // Ensure it returns a Promise
   };
 
-  const handleSalesClick = (salesId: string) => {
-    setSelectedSalesId(salesId); // Set the selected sale ID
+  const handleExpensesClick = (expenseId: string) => {
+    setSelectedExpensesId(expenseId); // Set the selected expense ID
   };
 
   const columns: GridColDef[] = [
-    { field: 'saleId', headerName: 'Sale ID', width: 80 },
+    { field: 'expenseId', headerName: 'Expense ID', width: 80 },
     { field: 'userid', headerName: 'User ID', width: 80 },
     { field: 'productId', headerName: 'Product ID', width: 80 },
     { field: 'productName', headerName: 'Product Name', width: 200 },
@@ -66,22 +67,24 @@ const Sales = () => {
     { field: 'unitPrice', headerName: 'Unit Price ($)', width: 80 },
     { field: 'totalAmount', headerName: 'Total Amount ($)', width: 80},
     { field: 'description', headerName: 'Description', width: 200 }, 
-    { field: 'createdAt', headerName: 'Created At', width: 150 },
+    { field: 'createdAt', headerName: 'Created At', width: 150 }, 
   ];
 
-  // Filter sales based on selected date (if any)
-  const filteredSales = filterDate
-    ? sales?.filter((sale) => sale.createdAt.startsWith(filterDate)) // Simple filter by matching date start
-    : sales;
+  // Filter expenses based on selected date (if any)
+  const filteredExpenses = filterDate
+  ? expenses?.filter((expense) =>
+      format(new Date(expense.createdAt), 'yyyy-MM-dd') === filterDate
+    )
+  : expenses;
 
   if (isLoading) {
     return <div className="py-4">Loading...</div>;
   }
 
-  if (isError || !sales) {
+  if (isError || !expenses) {
     return (
       <div className="text-center text-red-500 py-4">
-        Failed to fetch sales
+        Failed to fetch expenses
       </div>
     );
   }
@@ -94,7 +97,7 @@ const Sales = () => {
           <SearchIcon className="w-5 h-5 text-gray-500 m-2" />
           <input
             className="w-full py-2 px-4 rounded bg-white"
-            placeholder="Search sales..."
+            placeholder="Search expense..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -114,46 +117,46 @@ const Sales = () => {
   
       {/* HEADER BAR */}
       <div className="flex justify-between items-center mb-6">
-        <Header name="Sales" />
+        <Header name="Expenses" />
         <button
           className="flex items-center bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded"
           onClick={() => setIsModalOpen(true)}
         >
-          <PlusCircleIcon className="w-5 h-5 mr-2 !text-gray-200" /> Create Sale
+          <PlusCircleIcon className="w-5 h-5 mr-2 !text-gray-200" /> Create Expense
         </button>
       </div>
   
-      {/* SALES TABLE */}
+      {/* EXPENSES TABLE */}
       <div style={{ height: 500, width: '100%' }}>
         <DataGrid
-          rows={filteredSales?.map((sale) => ({
-            id: sale.saleId, // Ensure the `id` field is set correctly for DataGrid
-            saleId: sale.saleId,
-            userid: sale.userid,
-            productId: sale.productId,
-            productName: sale.productName, // Add productName
-            quantity: sale.quantity,
-            unitPrice: sale.unitPrice,
-            totalAmount: sale.totalAmount,
-            description: sale.description, // Add description
-            createdAt: format(new Date(sale.createdAt), 'yyyy-MM-dd HH:mm:ss'), // Format the createdAt date
+          rows={filteredExpenses?.map((expense) => ({
+            id: expense.expenseId, // Ensure the `id` field is set correctly for DataGrid
+            expenseId: expense.expenseId,
+            userid: expense.userid,
+            productId: expense.productId,
+            productName: expense.productName,
+            quantity: expense.quantity,
+            unitPrice: expense.unitPrice, // Keep unitPrice as is
+            totalAmount: expense.totalAmount, // Ensure totalAmount is passed through without modification
+            description: expense.description,
+            createdAt: format(new Date(expense.createdAt), 'yyyy-MM-dd HH:mm:ss'), // Format the date
           })) || []}
           columns={columns}
           paginationModel={{ pageSize: 10, page: 0 }} // Use paginationModel instead of pageSize
           onPaginationModelChange={(newModel) => console.log(newModel)} // Add this if you want to control pagination
-          onRowClick={(params) => handleSalesClick(params.row.saleId)} // Handle row click
+          onRowClick={(params) => handleExpensesClick(params.row.expenseId)} // Handle row click
         />
       </div>
   
       {/* MODAL */}
-      <CreateSalesModal
+      <CreateExpensesModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onCreate={handleCreateSales} // Updated to use create sales handler
-        fetchSales={handleFetchSales} // Pass the function to refetch sales
+        onCreate={handleCreateExpenses} // Updated to use create expenses handler
+        fetchExpenses={handleFetchExpenses} // Pass the function to refetch expenses
       />
     </div>
   );
-}
+};
 
-export default Sales;
+export default Expenses;

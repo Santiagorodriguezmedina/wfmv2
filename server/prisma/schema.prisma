@@ -20,16 +20,30 @@ model Products {
   stockQuantity Int
   description   String
   sales         Sales[]  // Define a one-to-many relationship with Sales
+  expenses      Expenses[]
 }
 
 model Sales {
   saleId      String   @id
   product     Products @relation(fields: [productId], references: [productId])
   productId   String   // Foreign key referencing productId from Products
-  timestamp   DateTime
+  productName String 
   quantity    Int
   unitPrice   Float
   totalAmount Float
+  description String
   userid      String
+  createdAt   DateTime
 }
-
+model Expenses {
+  expenseId   String  @id
+  product     Products @relation(fields: [productId], references: [productId])
+  productId   String
+  productName String
+  quantity    Int
+  unitPrice   Float
+  totalAmount Float
+  description String
+  userid      String
+  createdAt   DateTime 
+}

@@ -2,10 +2,12 @@
   {
     "saleId": "4fca2797-3e88-40c5-88d3-fd4df8744958",
     "productId": "1",
-    "timestamp": "2023-11-21T15:03:18Z",
+    "productName":"sada",
     "quantity": 700,
     "unitPrice": 550.22,
-    "totalAmount": 4708.54
-    ,"userid":"Romo"
+    "totalAmount": 4708.54,
+    "description":"whatever",
+    "userid":"Romo",
+    "createdAt": "2023-11-21T15:03:18Z"
   }
 ]

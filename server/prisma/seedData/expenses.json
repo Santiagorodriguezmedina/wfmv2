@@ -1,0 +1,13 @@
+[
+  {
+    "expenseId":"12312",
+    "productId":"1",
+    "productName":"sada",
+    "quantity":20,
+    "unitPrice":222,
+    "totalAmount": 4708.54,
+    "description":"whatever",
+    "userid":"Romo",
+    "createdAt":"2023-11-21T15:03:18Z"
+  }
+]

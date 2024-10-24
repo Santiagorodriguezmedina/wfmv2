@@ -19,33 +19,61 @@ export interface NewProduct {
 export interface DashboardMetrics {
   popularProducts: Product[];
   salesCreate: Sales[];
-
+  expensesCreate: Expenses[];
 }
 
 export interface Sales {
   saleId: string;
-  productId: string;  // Add this field if needed
-  timestamp: string;
+  productId: string; 
+  productName: string;
   quantity: number;
   unitPrice: number;
   totalAmount: number;
+  description: string;
   userid: string;
+  createdAt: string;
 }
 
 export interface NewSales {
-  productId: string;  // Add this field if needed
-  timestamp: string;
+  productId: string; 
+  productName: string;
   quantity: number;
   unitPrice: number;
   totalAmount: number;
+  description: string;
   userid: string;
+  createdAt: string;
 }
+
+export interface Expenses {
+  expenseId: string;
+  productId: string;  
+  productName: string; 
+  quantity: number;
+  unitPrice: number;
+  totalAmount: number;
+  description: string;
+  userid : string;
+  createdAt: string;
+}
+
+export interface NewExpenses {
+  productId: string;  
+  productName: string; 
+  quantity: number;
+  unitPrice: number;
+  totalAmount: number;
+  description: string;
+  userid : string;
+  createdAt: string;
+}
+
 
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
-  tagTypes: ["DashboardMetrics", "Products", "Sales"],
+  tagTypes: ["DashboardMetrics", "Products", "Sales", "Expenses"],
   endpoints: (build) => ({
 
     getDashboardMetrics: build.query<DashboardMetrics, void>({
@@ -53,6 +81,26 @@ export const api = createApi({
       providesTags: ["DashboardMetrics"],
     }),
 
+  //###########################################EXPENSES#################################################
+  
+    getExpenses: build.query<Expenses[], string | void>({
+      query: (search) => ({
+        url: "/expenses",
+        params: search ? { search } : {},
+      }),
+      providesTags: ["Expenses"],
+    }),
+
+    createExpenses: build.mutation<Expenses, NewExpenses>({
+      query: (newExpenses) => ({
+        url: "/expenses",
+        method: "POST",
+        body: newExpenses,
+      }),
+      invalidatesTags: ["Expenses"],
+    }),
+
+  //###########################################PRODUCTS#################################################
     getProducts: build.query<Product[], string | void>({
       query: (search) => ({
         url: "/products",
@@ -70,12 +118,6 @@ export const api = createApi({
       invalidatesTags: ["Products"],
     }),
 
-    // Add the new query to get product by ID
-    // getProductsById: build.query<Product, string>({
-    //   query: (id) => `/products/${id}`, // Adjust based on your route
-    //   providesTags: ["Products"],
-    // }),
-
     updateProduct: build.mutation<Product, { productId: string; updatedProduct: Partial<Product> }>({
       query: ({ productId, updatedProduct }) => ({
         url: `/products/${productId}`,
@@ -85,7 +127,6 @@ export const api = createApi({
       invalidatesTags: ["Products"],
     }),
     
-
     deleteProduct: build.mutation<void, string>({
       query: (productId) => ({
         url: `/products/${productId}`, // Use /products/:id as per your route
@@ -93,7 +134,6 @@ export const api = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
-
 
     //###########################################SALES#################################################
 
@@ -124,5 +164,7 @@ export const {
   useDeleteProductMutation,
   useGetSalesQuery,
   useCreateSalesMutation,
+  useGetExpensesQuery,
+  useCreateExpensesMutation,
   //useGetProductsByIdQuery // Export the new delete mutation
 } = api;

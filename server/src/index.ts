@@ -7,6 +7,7 @@ import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoute";
 import productRoutes from "./routes/productRoute"
 import salesRoute from "./routes/salesRoute"
+import expensesRoute from "./routes/expensesRoute"
 
 
 
@@ -32,6 +33,7 @@ app.use(cors());
 app.use("/dashboard", dashboardRoutes) // http://localhost:8000/dashboard
 app.use("/products", productRoutes) // http://localhost:8000/products
 app.use("/sales", salesRoute) // http://localhost:8000/sales
+app.use("/expenses", expensesRoute) // http://localhost:8000/sales
 
 
 //SERVER
